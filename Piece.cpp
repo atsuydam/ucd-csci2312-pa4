@@ -12,7 +12,7 @@ namespace Gaming {
         // constructor for the piece object. It needs __game initialized.
     }
 
-    virtual Piece::~Piece()
+    Piece::~Piece()
     {
         // de-constructor so something is going to need to de-allocated
     }

@@ -17,17 +17,17 @@ namespace Gaming {
         // Something's gonna have to be deleted
     }
 
-    virtual double Resource::consume()
+    double Resource::consume()
     {
         //Nom nom nom... Find the parent to this function.
     }
 
-    void Resource::age() override final
+    void Resource::age()
     {
         // set the age?
     }
 
-    ActionType Resource::takeTurn(const Surroundings &s) const override
+    ActionType Resource::takeTurn(const Surroundings &s) const
     {
         // Action type? Surroundings? Resources don't give a shit about their surroundings and do nothing until picked up
     }
@@ -35,17 +35,17 @@ namespace Gaming {
 
     // note: these won't be called  resources don't move
     // How do I title these???
-    Piece &operator*(Piece &other) override final
+    Piece & Resource::operator*(Piece &other)
     {
         // Figure out what to do with that override bit that he talked about for .2 secs
     }
 
-    Piece &interact(Agent *) override final
+    Piece & Resource::interact(Agent *)
     {
         // agent grabs resource, it either adds to health or strength. Done.
     }
 
-    Piece &interact(Resource *) override final // note: no interaction between resources
+    Piece & Resource::interact(Resource *) // note: no interaction between resources
     {
         // "Yo, apple, what up?"
         // "Nothing axe. You?"

@@ -15,7 +15,7 @@ namespace Gaming {
     }
 
     // Look, another action type that needs a header/ title/whatever
-    ActionType operator()(const Surroundings &s)
+    ActionType DefaultAgentStrategy::operator()(const Surroundings &s) const
     {
 
     }

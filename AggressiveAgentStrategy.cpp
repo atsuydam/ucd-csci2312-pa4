@@ -17,7 +17,7 @@ namespace Gaming {
         // Deconstructor
     }
 
-    ActionType operator()(const Surroundings &s) const //override
+    ActionType AggressiveAgentStrategy::operator()(const Surroundings &s) const //override
     {
         // another function I'm not sure how to head/declare/whatever. It returns an action type
     }

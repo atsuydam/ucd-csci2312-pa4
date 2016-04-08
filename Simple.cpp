@@ -20,12 +20,12 @@ namespace Gaming {
         // delete something
     }
 
-    void Simple::print(std::ostream &os) const override // it doesn't mind if override stays but CAN it?
+    void Simple::print(std::ostream &os) const
     {
         // print something out
     }
 
-    ActionType Simple::takeTurn(const Surroundings &s) const override
+    ActionType Simple::takeTurn(const Surroundings &s) const
     {
         // take in the surroundings and make a decision
     }

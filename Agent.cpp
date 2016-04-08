@@ -21,23 +21,23 @@ namespace Gaming {
     }
 
 
-    void Agent::age() override final
+    void Agent::age()
     {
 
     }
 
-    // Much like the resource file, I don't how to declare these child functions
-    Piece &operator*(Piece &other) //override final
+
+    Piece & Agent::operator*(Piece &other)
     {
 
     }
 
-    Piece &interact(Agent *) override final
+    Piece & Agent::interact(Agent *)
     {
 
     }
 
-    Piece &interact(Resource *) override final
+    Piece & Agent::interact(Resource *)
     {
 
     }

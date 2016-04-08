@@ -8,6 +8,8 @@
 
 namespace Gaming {
 
+    const double Advantage::ADVANTAGE_MULT_FACTOR = 0;
+
     Advantage::Advantage(const Game &g, const Position &p, double capacity)
             : Resource (g, p, capacity)
     {

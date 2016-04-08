@@ -7,7 +7,7 @@ namespace Gaming{
     // maybe not 0, but it makes it happy for now.
     const char STRATEGIC_ID = 0;
 
-    Strategic::Strategic(const Game &g, const Position &p, double energy, Strategy *s = new DefaultAgentStrategy())
+    Strategic::Strategic(const Game &g, const Position &p, double energy, Strategy *s)
             : Agent(g, p, energy)
     {
         // constructor

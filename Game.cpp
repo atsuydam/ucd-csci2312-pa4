@@ -4,8 +4,15 @@
 namespace Gaming {
 
     // Totally making up numbers, fix these
-    const unsigned int NUM_INIT_AGENT_FACTOR = 0;
-    const unsigned int NUM_INIT_RESOURCE_FACTOR = 0;
+    const unsigned int Game::NUM_INIT_AGENT_FACTOR = 0;
+    const unsigned int Game::NUM_INIT_RESOURCE_FACTOR = 0;
+
+    const unsigned Game::MIN_WIDTH = 0;
+    const unsigned Game::MIN_HEIGHT = 0;
+    const double Game::STARTING_AGENT_ENERGY = 0;
+    const double Game::STARTING_RESOURCE_CAPACITY = 0;
+
+    static PositionRandomizer __posRandomizer;  // this may not go here
 
 // Why is this here? it's private and listed above all the other stuff in the class but... it's all by itself
     void Game::populate() // populate the grid (used in automatic random initialization of a Game)
@@ -17,7 +24,6 @@ namespace Gaming {
     Game::Game()
     {
         //default constructor. ALl the members of this class as below
-        static PositionRandomizer __posRandomizer;  // this may not go here
 
         unsigned __numInitAgents, __numInitResources;
 
@@ -30,7 +36,7 @@ namespace Gaming {
 
         bool __verbose;
     }
-    Game::Game(unsigned width, unsigned height, bool manual = true) // note: manual population by default
+    Game::Game(unsigned width, unsigned height, bool manual) // note: manual population by default
             : __width(width),
               __height(height)
     {
@@ -75,8 +81,7 @@ namespace Gaming {
         // How many resources are on the board? Return that number. You have to do some adding
     }
 
-// guess who is not implemented in their current state? This guy
-    const Piece Game::*getPiece(unsigned int x, unsigned int y) const
+    const Piece *  Game::getPiece(unsigned int x, unsigned int y) const
     {
         // alright, returning a piece, taking in x and y, which are usually coordinates
         // there's a pointer star too so keep that bugger in mind
@@ -104,12 +109,12 @@ namespace Gaming {
         // this is stating it's never used so he never calls it. when will i?
     }
 
-    void Game::addStrategic(const Position &position, Strategy *s = new DefaultAgentStrategy())
+    void Game::addStrategic(const Position &position, Strategy *s)
     {
         // add a strategic piece using the position class, I think
     }
 
-    void Game::addStrategic(unsigned x, unsigned y, Strategy *s = new DefaultAgentStrategy())
+    void Game::addStrategic(unsigned x, unsigned y, Strategy *s)
     {
         // add a new strategic piece using cordinates
     }
@@ -162,7 +167,7 @@ namespace Gaming {
         // this may be the most difficult function to write and will call many, many others.
     }
 
-    void Game::play(bool verbose = false)
+    void Game::play(bool verbose)
     {
         // verbose it what prints the game play to the screen. If changed in the tests
         // source pages to change it will display every round of the board.
