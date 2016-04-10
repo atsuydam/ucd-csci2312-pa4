@@ -4,23 +4,24 @@
 
 namespace Gaming{
 
-    // maybe not 0, but it makes it happy for now.
-    const char STRATEGIC_ID = 0;
-
+    //const Strategic::STRATEGIC_ID = 'T';
     Strategic::Strategic(const Game &g, const Position &p, double energy, Strategy *s)
             : Agent(g, p, energy)
     {
-        // constructor
+        // constructor. This adds a strategy pointer to a virtual class.
+        __strategy = nullptr;
     }
 
     Strategic::~Strategic()
     {
         // de-constructor. Destroy the strategy, the only obvious pointer
+        delete __strategy;
     }
 
     void Strategic::print(std::ostream &os) const // does override need to go back?
     {
         // print it out, grab an out stream, something like that.
+        os << "T" << __id;
     }
 
     ActionType Strategic::takeTurn(const Surroundings &s) const

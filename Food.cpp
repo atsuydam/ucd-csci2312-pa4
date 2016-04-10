@@ -7,11 +7,8 @@
 
 namespace Gaming {
 
-    // Are we numbering the food?
-    const char FOOD_ID = 0;
-
+   // const Food::FOOD_ID = 'F';
     // constructor and deconstuctors
-
     Food::Food(const Game &g, const Position &p, double capacity)
             : Resource(g, p, capacity)
     {
@@ -26,6 +23,6 @@ namespace Gaming {
     // one of those overridden functions
     void Food::print(std::ostream &os) const
     {
-
+        os << "F" << __id;
     }
 }

@@ -5,7 +5,7 @@
 namespace Gaming {
 
 // FINd actual intializing value in paper work
-    const double DEFAULT_AGGRESSION_THRESHOLD = 0;
+    const double DEFAULT_AGGRESSION_THRESHOLD = Game::STARTING_AGENT_ENERGY * 0.75;
 
     AggressiveAgentStrategy::AggressiveAgentStrategy(double agentEnergy)
     {

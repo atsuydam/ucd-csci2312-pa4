@@ -8,7 +8,8 @@
 
 namespace Gaming {
 
-    const double Advantage::ADVANTAGE_MULT_FACTOR = 0;
+   // const Advantage::ADVANTAGE_ID = 'D';
+    const double Advantage::ADVANTAGE_MULT_FACTOR = 2.0;
 
     Advantage::Advantage(const Game &g, const Position &p, double capacity)
             : Resource (g, p, capacity)
@@ -25,7 +26,7 @@ namespace Gaming {
     // Look at that! I was missing const, have to go check all the others.
     void Advantage::print(std::ostream &os) const
     {
-
+        os << "D" << __id;
     }
 
     double Advantage::getCapacity() const

@@ -5,14 +5,12 @@
 
 namespace Gaming {
 
-    // everything must be numbered and accounted for
-    const char SIMPLE_ID = 0;
-
+    //const Simple::SIMPLE_ID = 'S'
     // constructor and de-constructor
     Simple::Simple(const Game &g, const Position &p, double energy)
             : Agent(g, p, energy)
     {
-
+        // The only thing this adds is the simple ID. Everything was initialized with Agent
     }
 
     Simple::~Simple()
@@ -23,6 +21,7 @@ namespace Gaming {
     void Simple::print(std::ostream &os) const
     {
         // print something out
+        os << "S" << __id;
     }
 
     ActionType Simple::takeTurn(const Surroundings &s) const

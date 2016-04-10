@@ -4,13 +4,13 @@
 namespace Gaming {
 
     // Totally making up numbers, fix these
-    const unsigned int Game::NUM_INIT_AGENT_FACTOR = 0;
-    const unsigned int Game::NUM_INIT_RESOURCE_FACTOR = 0;
+    const unsigned int Game::NUM_INIT_AGENT_FACTOR = 4;
+    const unsigned int Game::NUM_INIT_RESOURCE_FACTOR = 2;
 
-    const unsigned Game::MIN_WIDTH = 0;
-    const unsigned Game::MIN_HEIGHT = 0;
-    const double Game::STARTING_AGENT_ENERGY = 0;
-    const double Game::STARTING_RESOURCE_CAPACITY = 0;
+    const unsigned Game::MIN_WIDTH = 3;
+    const unsigned Game::MIN_HEIGHT = 3;
+    const double Game::STARTING_AGENT_ENERGY = 20;
+    const double Game::STARTING_RESOURCE_CAPACITY = 10;
 
     static PositionRandomizer __posRandomizer;  // this may not go here
 
@@ -23,18 +23,18 @@ namespace Gaming {
 // constructors and de-constructor
     Game::Game()
     {
-        //default constructor. ALl the members of this class as below
+        //default constructor. All the members of this class as below
+        // These, if something is breaking check out these values;
+        __numInitAgents = 0;
+        __numInitResources = 0;
+        __width = MIN_WIDTH;
+        __height =MIN_HEIGHT;
 
-        unsigned __numInitAgents, __numInitResources;
-
-        unsigned __width, __height;
         std::vector<Piece *> __grid; // if a position is empty, nullptr
-
-        unsigned int __round;
-
-        Status __status;
-
-        bool __verbose;
+        // messing around here too, status is an enum, not finding which the "starting" position is
+        __round = 0;
+        __status ;
+        __verbose = false;
     }
     Game::Game(unsigned width, unsigned height, bool manual) // note: manual population by default
             : __width(width),

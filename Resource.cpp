@@ -4,12 +4,13 @@
 #include "Resource.h"
 
 namespace Gaming {
-    const double RESOURCE_SPOIL_FACTOR = 4;     // This is a random number, look for instructions for correct value
+    const double RESOURCE_SPOIL_FACTOR = 1.2;
 
     Resource::Resource(const Game &g, const Position &p, double capacity)
             : Piece (g, p)
     {
-        // Resource constructor. It's telling me piece doesn't have a default constructor.
+        // The rest of the resource was constructed with piece
+        __capacity = capacity;
     }
 
     Resource::~Resource()
