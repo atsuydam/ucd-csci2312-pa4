@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <iomanip>
 #include "Game.h"
 #include "Piece.h"
 #include "Resource.h"
@@ -8,7 +9,7 @@
 
 namespace Gaming {
 
-   // const Advantage::ADVANTAGE_ID = 'D';
+    const char  Advantage::ADVANTAGE_ID = 'D';
     const double Advantage::ADVANTAGE_MULT_FACTOR = 2.0;
 
     Advantage::Advantage(const Game &g, const Position &p, double capacity)
@@ -26,7 +27,7 @@ namespace Gaming {
     // Look at that! I was missing const, have to go check all the others.
     void Advantage::print(std::ostream &os) const
     {
-        os << "D" << __id;
+        os << "D" << std::setw(4) << std::left << __id;
     }
 
     double Advantage::getCapacity() const

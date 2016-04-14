@@ -6,8 +6,8 @@
 
 namespace Gaming {
 
-// Look into the documentation as to what this should be
-  //  Agent::AGENT_FATIGUE_RATE = 0.3;
+
+    const double Agent::AGENT_FATIGUE_RATE = 0.3;
 
     Agent::Agent(const Game &g, const Position &p, double energy)
             : Piece(g, p)

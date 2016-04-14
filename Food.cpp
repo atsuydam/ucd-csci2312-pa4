@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "Game.h"
 #include "Piece.h"
 #include "Resource.h"
@@ -7,11 +8,13 @@
 
 namespace Gaming {
 
-   // const Food::FOOD_ID = 'F';
+    const char Food::FOOD_ID = 'F';
+
     // constructor and deconstuctors
     Food::Food(const Game &g, const Position &p, double capacity)
             : Resource(g, p, capacity)
     {
+
         // construct something, probably the food. OR has it been constructed through the resource?
     }
 
@@ -23,6 +26,6 @@ namespace Gaming {
     // one of those overridden functions
     void Food::print(std::ostream &os) const
     {
-        os << "F" << __id;
+        os << "F" << std::setw(4) << std::left << __id;
     }
 }

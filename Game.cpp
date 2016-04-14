@@ -1,5 +1,8 @@
 #include <iostream>
 #include "Game.h"
+#include "Piece.h"
+#include "Resource.h"
+#include "Simple.h"
 
 namespace Gaming {
 
@@ -11,13 +14,22 @@ namespace Gaming {
     const unsigned Game::MIN_HEIGHT = 3;
     const double Game::STARTING_AGENT_ENERGY = 20;
     const double Game::STARTING_RESOURCE_CAPACITY = 10;
-
-    static PositionRandomizer __posRandomizer;  // this may not go here
+//somehow this nneds initialized. It's a functor but...
+    PositionRandomizer __posRandomizer;  // this may not go here
 
 // Why is this here? it's private and listed above all the other stuff in the class but... it's all by itself
     void Game::populate() // populate the grid (used in automatic random initialization of a Game)
     {
-
+        // these numbers are need for the the populate function, not the constructor
+        __numInitAgents = (__width * __height) / NUM_INIT_AGENT_FACTOR;
+        __numInitResources = (__width * __height) / NUM_INIT_RESOURCE_FACTOR;
+        __grid[__width, __height];
+        for (int i=0; i < __width; i++)
+        {
+            for (int j=0; j < __height; j++)
+                // I need to put a piece in here
+                __grid[i,j] = nullptr;
+        }
     }
 
 // constructors and de-constructor
@@ -28,25 +40,40 @@ namespace Gaming {
         __numInitAgents = 0;
         __numInitResources = 0;
         __width = MIN_WIDTH;
-        __height =MIN_HEIGHT;
+        __height = MIN_HEIGHT;
 
-        std::vector<Piece *> __grid; // if a position is empty, nullptr
-        // messing around here too, status is an enum, not finding which the "starting" position is
+//        std::vector<Piece *> __grid = ; // if a position is empty, nullptr
+
         __round = 0;
-        __status ;
+        __status = NOT_STARTED;
         __verbose = false;
     }
     Game::Game(unsigned width, unsigned height, bool manual) // note: manual population by default
             : __width(width),
               __height(height)
     {
-        // will I need anything else in here
+        // need an exception for too small a board
+        if (width < MIN_HEIGHT || height < MIN_HEIGHT)
+            throw InsufficientDimensionsEx(MIN_WIDTH, MIN_HEIGHT, width, height);
+
+        __numInitAgents = 0;
+        __numInitResources = 0;
+
+//        std::vector<Piece *> __grid = ; // if a position is empty, nullptr
+
+        //call the function to populate the grid
+        //populate();
+
+        __round = 0;
+        __status = NOT_STARTED;
+        __verbose = false;
+
     }
 
     Game::Game(const Game &another)
             : Game()
     {
-        // ooh.. i have no idea.
+        // Make another game with the same values but it will have random population
     }
 
     // Destroy it! Wreck all the things!!
@@ -59,26 +86,36 @@ namespace Gaming {
     unsigned int Game::getNumPieces() const
     {
         // oh.. we need to add up agents and resources
+        return getNumAgents() + getNumResources();
     }
 
     unsigned int Game::getNumAgents() const
     {
-        // number of agents?
+        // number of agents? Add simple and strategic
+        return getNumSimple() + getNumStrategic();
     }
 
     unsigned int Game::getNumSimple() const
     {
-        // simple? oh simple pieces from simple.cpp/h
+        // simple, calculation on the readme file
+        unsigned int numSimple = __numInitAgents - getNumStrategic();
+        return numSimple;
     }
 
     unsigned int Game::getNumStrategic() const
     {
-        // yeah, return the number of strategic something or other
+        // yeah, return the number of strategic agents
+        unsigned int numStrategic = __numInitAgents / 2;
+        return numStrategic;
+
     }
 
     unsigned int Game::getNumResources() const
     {
         // How many resources are on the board? Return that number. You have to do some adding
+        unsigned int resource = 0;
+        // an algorthim to count food and advantages.
+        return resource;
     }
 
     const Piece *  Game::getPiece(unsigned int x, unsigned int y) const
@@ -95,18 +132,24 @@ namespace Gaming {
 
     void Game::addSimple(const Position &position, double energy) // used for testing only
     {
-
+        // call the constructor for the simple agent piece. Will the *this point work? No errors
+        Simple(*this, position, energy);
     }
 
     void Game::addSimple(unsigned x, unsigned y)
     {
         // look at that, coordinates to set a simple piece
+        Position p(x, y);
+        Simple(*this, p, STARTING_AGENT_ENERGY);
+
     }
 
     void Game::addSimple(unsigned x, unsigned y, double energy)
     {
         // okay, now we're setting a simple piece that has energy.
         // this is stating it's never used so he never calls it. when will i?
+        Position p (x, y);
+        Simple(*this, p, energy);
     }
 
     void Game::addStrategic(const Position &position, Strategy *s)

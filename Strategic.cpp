@@ -1,10 +1,11 @@
 #include <iostream>
+#include <iomanip>
 #include "Agent.h"
 #include "Strategic.h"
 
 namespace Gaming{
 
-    //const Strategic::STRATEGIC_ID = 'T';
+    const char Strategic::STRATEGIC_ID = 'T';
     Strategic::Strategic(const Game &g, const Position &p, double energy, Strategy *s)
             : Agent(g, p, energy)
     {
@@ -21,7 +22,7 @@ namespace Gaming{
     void Strategic::print(std::ostream &os) const // does override need to go back?
     {
         // print it out, grab an out stream, something like that.
-        os << "T" << __id;
+        os << "T" << std::setw(4) << std::left << __id;
     }
 
     ActionType Strategic::takeTurn(const Surroundings &s) const

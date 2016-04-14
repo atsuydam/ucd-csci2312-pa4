@@ -47,7 +47,8 @@ namespace Gaming {
     // Functions for Insufficient Dimensions Exception, a sub class of the Dimension Exception above
     void InsufficientDimensionsEx::__print_args(std::ostream &os) const
     {
-
+        os << "Minimum height " << __exp_height << ", requested height " << __height << "\n Minimum width "
+                << __exp_width << ", requested width " << __width << "\n";
     }
 
     InsufficientDimensionsEx::InsufficientDimensionsEx(unsigned minWidth, unsigned minHeight, unsigned width, unsigned height)
@@ -55,6 +56,8 @@ namespace Gaming {
     {
         // Best guess? Those variables needs compared to each other
         // OR it's a constructor for a class to compare to?
+        __name = "InsufficientDimensionsEx";
+
     }
 
     // Functions for the Out of Bounds exceptions

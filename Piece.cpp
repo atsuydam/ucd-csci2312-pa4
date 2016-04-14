@@ -5,7 +5,7 @@
 
 namespace Gaming {
 
-    unsigned int __id = 0;
+    unsigned int Piece::__idGen = 0;
     // these look to be the only functions that need defined in the Piece.h file.
     Piece::Piece(const Game &g, const Position &p)
                     : __game(g)
@@ -17,7 +17,7 @@ namespace Gaming {
         __turned = false;
         // and protected ID It would make more sense for this to be initialized outside the constructor and
         // incremented inside.
-        __id++;
+        __id = ++__idGen;
     }
 
     Piece::~Piece()
@@ -27,9 +27,7 @@ namespace Gaming {
 
     std::ostream &operator<<(std::ostream &os, const Piece &piece)
     {
-        // and we have an out stream operator.
-        os << __id;
-
+        piece.print(os);
         return os;
     }
 
