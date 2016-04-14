@@ -3,6 +3,7 @@
 #include "Piece.h"
 #include "Resource.h"
 #include "Simple.h"
+#include "Strategic.h"
 
 namespace Gaming {
 
@@ -14,7 +15,7 @@ namespace Gaming {
     const unsigned Game::MIN_HEIGHT = 3;
     const double Game::STARTING_AGENT_ENERGY = 20;
     const double Game::STARTING_RESOURCE_CAPACITY = 10;
-//somehow this nneds initialized. It's a functor but...
+//somehow this needs initialized. It's a functor but...
     PositionRandomizer __posRandomizer;  // this may not go here
 
 // Why is this here? it's private and listed above all the other stuff in the class but... it's all by itself
@@ -23,13 +24,6 @@ namespace Gaming {
         // these numbers are need for the the populate function, not the constructor
         __numInitAgents = (__width * __height) / NUM_INIT_AGENT_FACTOR;
         __numInitResources = (__width * __height) / NUM_INIT_RESOURCE_FACTOR;
-        __grid[__width, __height];
-        for (int i=0; i < __width; i++)
-        {
-            for (int j=0; j < __height; j++)
-                // I need to put a piece in here
-                __grid[i,j] = nullptr;
-        }
     }
 
 // constructors and de-constructor
@@ -59,10 +53,13 @@ namespace Gaming {
         __numInitAgents = 0;
         __numInitResources = 0;
 
-//        std::vector<Piece *> __grid = ; // if a position is empty, nullptr
+        std::vector<Piece *> __grid; // if a position is empty, nullptr
 
-        //call the function to populate the grid
-        //populate();
+        // need to populate the grid if not manual
+        if (!manual)
+        {
+            populate();
+        }
 
         __round = 0;
         __status = NOT_STARTED;
@@ -74,6 +71,12 @@ namespace Gaming {
             : Game()
     {
         // Make another game with the same values but it will have random population
+        this->__width = another.__width;
+        this->__height = another.__height;
+
+        populate();
+        __round = 0;
+        __status = NOT_STARTED;
     }
 
     // Destroy it! Wreck all the things!!
@@ -98,14 +101,26 @@ namespace Gaming {
     unsigned int Game::getNumSimple() const
     {
         // simple, calculation on the readme file
-        unsigned int numSimple = __numInitAgents - getNumStrategic();
+        unsigned int numSimple = 0;
+
+        for (auto it = __grid.begin(); it != __grid.end(); ++it)
+        {
+            Simple *simple = dynamic_cast<Simple*>(*it);
+            if (simple) numSimple++;
+        }
         return numSimple;
     }
 
     unsigned int Game::getNumStrategic() const
     {
         // yeah, return the number of strategic agents
-        unsigned int numStrategic = __numInitAgents / 2;
+        unsigned int numStrategic = 0;
+
+        for (auto it = __grid.begin(); it != __grid.end(); ++it)
+        {
+            Strategic *strategic = dynamic_cast<Strategic*>(*it);
+            if (strategic) numStrategic++;
+        }
         return numStrategic;
 
     }
@@ -220,6 +235,9 @@ namespace Gaming {
     std::ostream &operator<<(std::ostream &os, const Game &game)
     {
         // make it visible, return os
+        // print out the grid pattern
+
+        return os;
     }
 
 }
