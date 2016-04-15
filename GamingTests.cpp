@@ -104,7 +104,7 @@ void test_piece_print(ErrorContext &ec, unsigned int numRuns) {
             }
 
             std::stringstream compare;
-            compare << 'S' << id << " T" << (id+1) << " F" << (id+2) << " D" << (id+3);
+            compare << "S" << id << " T" << (id+1) << " F" << (id+2) << " D" << (id+3);
 
             pass = pass && (ss.str() == compare.str());
 

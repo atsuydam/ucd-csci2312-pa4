@@ -338,7 +338,7 @@ namespace Gaming {
         int count = 0;
 
         // it's looking for the round number
-        os << "Round:" << game.getRound() << std::endl;
+        os << "Round " << game.getRound() << std::endl;
 
         for (int i=0; i < game.__height; i++)
         {
