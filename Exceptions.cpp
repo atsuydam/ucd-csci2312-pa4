@@ -13,6 +13,7 @@ namespace Gaming {
     std::ostream &operator<<(std::ostream &os, const GamingException &ex)
     {
         // obviously he wants something outputted here
+        os << ex.__name;
     }
 
     // Functions from the Dimensions Ex
@@ -63,7 +64,7 @@ namespace Gaming {
     // Functions for the Out of Bounds exceptions
     void OutOfBoundsEx:: __print_args(std::ostream &os) const
     {
-
+        os << __name;
     }
 
     // Function for the Out of Bounds exception
@@ -72,6 +73,7 @@ namespace Gaming {
     {
         // much like insufficient dimensions, this took a dimensionsEx constructor and the order of variables may
         // be wrong. Need to figure out what is expected of this constructor.
+        __name = "OutOfBoundsEx";
     }
 
     // Functions for Position Ex
@@ -90,19 +92,20 @@ namespace Gaming {
             : PositionEx(x, y)
     {
         // something goes in here. Something you see
+        __name = "PositionNonemptyEx";
     }
 
     // Functions for Position empty ex
     PositionEmptyEx::PositionEmptyEx(unsigned x, unsigned y)
             : PositionEx(x, y)
     {
-        // something in here
+
     }
 
     // Function for pos (position?) vector empty
     void PosVectorEmptyEx::__print_args(std::ostream &os) const
     {
-
+        os << __name;
     }
 
     PosVectorEmptyEx::PosVectorEmptyEx()

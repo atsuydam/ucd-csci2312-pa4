@@ -4,6 +4,8 @@
 #include "Resource.h"
 #include "Simple.h"
 #include "Strategic.h"
+#include "Food.h"
+#include "Advantage.h"
 
 namespace Gaming {
 
@@ -15,16 +17,6 @@ namespace Gaming {
     const unsigned Game::MIN_HEIGHT = 3;
     const double Game::STARTING_AGENT_ENERGY = 20;
     const double Game::STARTING_RESOURCE_CAPACITY = 10;
-//somehow this needs initialized. It's a functor but...
-    PositionRandomizer __posRandomizer;  // this may not go here
-
-// Why is this here? it's private and listed above all the other stuff in the class but... it's all by itself
-    void Game::populate() // populate the grid (used in automatic random initialization of a Game)
-    {
-        // these numbers are need for the the populate function, not the constructor
-        __numInitAgents = (__width * __height) / NUM_INIT_AGENT_FACTOR;
-        __numInitResources = (__width * __height) / NUM_INIT_RESOURCE_FACTOR;
-    }
 
 // constructors and de-constructor
     Game::Game()
@@ -36,7 +28,10 @@ namespace Gaming {
         __width = MIN_WIDTH;
         __height = MIN_HEIGHT;
 
-//        std::vector<Piece *> __grid = ; // if a position is empty, nullptr
+        for (int i=0; i < (__width*__height); i++)
+        {
+            __grid.push_back(nullptr);
+        }
 
         __round = 0;
         __status = NOT_STARTED;
@@ -53,8 +48,12 @@ namespace Gaming {
         __numInitAgents = 0;
         __numInitResources = 0;
 
-        std::vector<Piece *> __grid; // if a position is empty, nullptr
+        // I have a 1-d array of Piece pointers. I'll have to use conversion for 2-d to (x,y)
 
+        for (int i=0; i < (__width * __height); i++)
+        {
+            __grid.push_back(nullptr);
+        }
         // need to populate the grid if not manual
         if (!manual)
         {
@@ -71,8 +70,9 @@ namespace Gaming {
             : Game()
     {
         // Make another game with the same values but it will have random population
-        this->__width = another.__width;
-        this->__height = another.__height;
+        __width = another.__width;
+        __height = another.__height;
+        __grid = another.__grid;
 
         populate();
         __round = 0;
@@ -83,6 +83,15 @@ namespace Gaming {
     Game::~Game()
     {
         // delete all the things. ok, delete the creation of vector<Piece *> grid
+    }
+
+    void Game::populate() // populate the grid (used in automatic random initialization of a Game)
+    {
+        // these numbers are need for the the populate function, not the constructor
+        __numInitAgents = (__width * __height) / NUM_INIT_AGENT_FACTOR;
+        __numInitResources = (__width * __height) / NUM_INIT_RESOURCE_FACTOR;
+        // We have many agents and resources we need. Will the function choose the type at
+        // random?
     }
 
     // Getters. If these were as simple as the first two with only a return he would have implemented them so...
@@ -128,20 +137,30 @@ namespace Gaming {
     unsigned int Game::getNumResources() const
     {
         // How many resources are on the board? Return that number. You have to do some adding
-        unsigned int resource = 0;
-        // an algorthim to count food and advantages.
-        return resource;
+        unsigned int numResource = 0;
+
+        for (auto it = __grid.begin(); it != __grid.end(); ++it)
+        {
+            Resource *resource = dynamic_cast<Resource*>(*it);
+            if (resource) numResource++;
+        }
+        return numResource;
     }
 
     const Piece *  Game::getPiece(unsigned int x, unsigned int y) const
     {
         // alright, returning a piece, taking in x and y, which are usually coordinates
-        // there's a pointer star too so keep that bugger in mind
+        // Convert the x and y into position (x*height)+ y = position, allows __grid[position]
+        unsigned int pos = (x *__height) + y;
+        Piece *p = this->__grid[pos];
+        return p;
     }
 
     // grid population methods
     void Game::addSimple(const Position &position)
     {
+        // not sure what energy to pass to the new character so I'm giving it a default value
+        // position is a class with x and y.
 
     }
 
@@ -154,47 +173,111 @@ namespace Gaming {
     void Game::addSimple(unsigned x, unsigned y)
     {
         // look at that, coordinates to set a simple piece
-        Position p(x, y);
-        Simple(*this, p, STARTING_AGENT_ENERGY);
-
+       addSimple(x, y, STARTING_AGENT_ENERGY);
     }
 
     void Game::addSimple(unsigned x, unsigned y, double energy)
     {
         // okay, now we're setting a simple piece that has energy.
         // this is stating it's never used so he never calls it. when will i?
-        Position p (x, y);
-        Simple(*this, p, energy);
+
+        int spot = (x * __width) + y;
+        if (spot >__grid.size()-1)
+        {
+            throw OutOfBoundsEx(__width, __height, x, y);
+        }
+        // is the spot open?
+        if (__grid[spot] == nullptr)
+        {
+            Position p (x, y);
+            Simple *s = new Simple(*this, p, energy);
+            __grid[spot] = s;
+        }
+        else
+        {
+            throw PositionNonemptyEx(x, y);
+        }
     }
 
     void Game::addStrategic(const Position &position, Strategy *s)
     {
         // add a strategic piece using the position class, I think
+        int array_spot = (position.x * __width) + position.y;
+        if (array_spot >__grid.size()-1)
+        {
+            throw OutOfBoundsEx(__width, __height, position.x, position.y);
+        }
+        // is the spot you want to put it open?
+        if (__grid[array_spot] == nullptr)
+        {
+            Strategic *strat = new Strategic(*this, position, STARTING_AGENT_ENERGY, s);
+            __grid[array_spot] = strat;
+        }
+        else
+        {
+            throw PositionNonemptyEx(position.x, position.y);
+        }
     }
 
     void Game::addStrategic(unsigned x, unsigned y, Strategy *s)
     {
-        // add a new strategic piece using cordinates
+        // add a new strategic piece using cordinates. Not sure what to do with strategy pointer being passed
+        Position p (x, y);
+        addStrategic(p, s);
     }
 
     void Game::addFood(const Position &position)
     {
         // add food to the board using the position class
+        int array_spot = (position.x * __width) + position.y;
+        if (array_spot >__grid.size()-1)
+        {
+            throw OutOfBoundsEx(__width, __height, position.x, position.y);
+        }
+        // make sure the spot is open
+        if (__grid[array_spot] == nullptr)
+        {
+            Food *food = new Food(*this, position, STARTING_RESOURCE_CAPACITY);
+            __grid[array_spot] = food;
+        }
+        else
+        {
+            throw PositionNonemptyEx(position.x, position.y);
+        }
     }
 
     void Game::addFood(unsigned x, unsigned y)
     {
         // add food to the board using the given coordinates
+        Position p (x, y);
+        addFood(p);
     }
 
     void Game::addAdvantage(const Position &position)
     {
         // add an advantage to the board using the position class
+        int array_spot = (position.x * __width) + position.y;
+        if (array_spot >__grid.size()-1)
+        {
+            throw OutOfBoundsEx(__width, __height, position.x, position.y);
+        }
+        // make sure the spot is available, not sitting agents on resources and the like
+        if (__grid[array_spot] != nullptr)
+        {
+            throw PositionNonemptyEx(position.x, position.y);
+        }
+        else
+        {
+            Advantage *loot = new Advantage(*this, position, STARTING_RESOURCE_CAPACITY);
+            __grid[array_spot] = loot;
+        }
     }
 
     void Game::addAdvantage(unsigned x, unsigned y)
     {
         // add an advantage to the board using the coordinates
+        Position  p (x, y);
+        addAdvantage(p);
     }
 
     const Surroundings Game::getSurroundings(const Position &pos) const
@@ -236,7 +319,30 @@ namespace Gaming {
     {
         // make it visible, return os
         // print out the grid pattern
+        int c=0; // a variable to go through the vectors, the other two are formatting
+        int count = 0;
 
+        // it's looking for the round number
+        os << "Round:" << game.getRound() << std::endl;
+
+        for (int i=0; i < game.__height; i++)
+        {
+            for (int j=0; j < game.__width; j++)
+            {
+                if (game.__grid[count] == nullptr)
+                {
+                    os << "[     ]";
+                }
+                else
+                {
+                    os << "[" << game.__grid[count] << "]";
+                }
+                count++;
+            }
+            os << std::endl;
+        }
+        // and the status of the game
+        os << "Status:" << game.getStatus() << std::endl;
         return os;
     }
 
