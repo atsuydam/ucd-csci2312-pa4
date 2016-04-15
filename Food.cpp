@@ -26,6 +26,6 @@ namespace Gaming {
     // one of those overridden functions
     void Food::print(std::ostream &os) const
     {
-        os << "F" << std::setw(4) << std::left << __id;
+        os << FOOD_ID << std::setw(4) << std::left << __id;
     }
 }

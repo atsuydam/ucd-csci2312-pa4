@@ -22,7 +22,7 @@ namespace Gaming{
     void Strategic::print(std::ostream &os) const // does override need to go back?
     {
         // print it out, grab an out stream, something like that.
-        os << "T" << std::setw(4) << std::left << __id;
+        os << STRATEGIC_ID << std::setw(4) << std::left << __id;
     }
 
     ActionType Strategic::takeTurn(const Surroundings &s) const

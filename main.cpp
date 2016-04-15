@@ -29,8 +29,8 @@ int main() {
     ErrorContext ec(cout);
 
     // piece tests
-//    test_piece_smoketest(ec);
-//    test_piece_print(ec, NumIters);
+    test_piece_smoketest(ec);
+    test_piece_print(ec, NumIters);
 //    test_piece_aging(ec, NumIters);
 //    test_piece_energy(ec, NumIters);
 //    test_piece_turntaking(ec, NumIters);

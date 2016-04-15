@@ -92,6 +92,7 @@ namespace Gaming {
         __numInitResources = (__width * __height) / NUM_INIT_RESOURCE_FACTOR;
         // We have many agents and resources we need. Will the function choose the type at
         // random?
+
     }
 
     // Getters. If these were as simple as the first two with only a return he would have implemented them so...
@@ -151,9 +152,8 @@ namespace Gaming {
     {
         // alright, returning a piece, taking in x and y, which are usually coordinates
         // Convert the x and y into position (x*height)+ y = position, allows __grid[position]
-        unsigned int pos = (x *__height) + y;
-        Piece *p = this->__grid[pos];
-        return p;
+        unsigned int pos = (x *__width) + y;
+        return __grid[pos];
     }
 
     // grid population methods
@@ -161,13 +161,28 @@ namespace Gaming {
     {
         // not sure what energy to pass to the new character so I'm giving it a default value
         // position is a class with x and y.
-
+        addSimple(position, STARTING_AGENT_ENERGY);
     }
 
     void Game::addSimple(const Position &position, double energy) // used for testing only
     {
         // call the constructor for the simple agent piece. Will the *this point work? No errors
-        Simple(*this, position, energy);
+        int spot = (position.x * __width) + position.y;
+        if (spot >__grid.size()-1)
+        {
+            throw OutOfBoundsEx(__width, __height, position.x, position.y);
+        }
+        // is the spot open?
+        if (__grid[spot] == nullptr)
+        {
+            Position p (position.x, position.y);
+            Simple *s = new Simple(*this, p, energy);
+            __grid[spot] = s;
+        }
+        else
+        {
+            throw PositionNonemptyEx(position.x, position.y);
+        }
     }
 
     void Game::addSimple(unsigned x, unsigned y)

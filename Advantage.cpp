@@ -27,7 +27,7 @@ namespace Gaming {
     // Look at that! I was missing const, have to go check all the others.
     void Advantage::print(std::ostream &os) const
     {
-        os << "D" << std::setw(4) << std::left << __id;
+        os << ADVANTAGE_ID << std::setw(4) << std::left << __id;
     }
 
     double Advantage::getCapacity() const
