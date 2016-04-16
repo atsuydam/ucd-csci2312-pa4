@@ -1,5 +1,7 @@
 #include <iostream>
 #include <iomanip>
+#include <sstream>
+#include <fstream>
 #include "Game.h"
 #include "Piece.h"
 #include "Resource.h"
@@ -359,8 +361,42 @@ namespace Gaming {
 
     const Surroundings Game::getSurroundings(const Position &pos) const
     {
-        // return the surroundings for the passed position
+        // return the surroundings for the passed position in an array of the Surroundings class
+        Surroundings *around = new Surroundings;
+        // a variable to count through the array for surroundings
+        int i = 0;
+        // a for loop to go through the three x position rows
+        for (int j = -1; j <= 1; j++)
+        {
+            // a nested loop for the y positions of the x row
+            for (int k = -1; k <= 1; k++)
+            {
+                int position = (((pos.x + j) * __width) + (pos.y + k));
+                if (pos.x+j < 0 || pos.x+j >= __height || pos.y+k <0 || pos.y+k >= __width)
+                {
+                    around->array[i] = INACCESSIBLE;
+                    i++;
+                }
+                else if (i == 4) {
+                    around->array[i] = SELF;
+                    i++;
+                }
+                else if (__grid[position] ==  nullptr)
+                {
+                    around->array[i] = EMPTY;
+                    i++;
+                }
+                else
+                {
+                    around->array[i] = __grid[position]->getType();
+                    i++;
+                }
 
+            }
+        }
+
+        around->array[4] = SELF;
+        return *around;
     }
 
     // gameplay methods

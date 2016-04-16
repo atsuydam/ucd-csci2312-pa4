@@ -40,7 +40,7 @@ int main() {
     test_surroundings_smoketest(ec);
 //
 //    // action tests
-//    test_action_smoketest(ec);
+    test_action_smoketest(ec);
 //
 //    // game tests
     test_game_smoketest(ec);
