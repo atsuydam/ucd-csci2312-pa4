@@ -818,13 +818,13 @@ void test_action_smoketest(ErrorContext &ec) {
         g.addSimple(5, 6); Position pos(5, 6);
 
         pass = g.isLegal(ActionType::N, pos) &&
-//               (! g.isLegal(ActionType::NE, pos)) &&
-//               g.isLegal(ActionType::NW, pos) &&
-//               (! g.isLegal(ActionType::E, pos)) &&
-//               g.isLegal(ActionType::W, pos) &&
-//               (! g.isLegal(ActionType::SE, pos)) &&
-//               (! g.isLegal(ActionType::SW, pos)) &&
-//               (! g.isLegal(ActionType::S, pos)) &&
+               (! g.isLegal(ActionType::NE, pos)) &&
+               g.isLegal(ActionType::NW, pos) &&
+               (! g.isLegal(ActionType::E, pos)) &&
+               g.isLegal(ActionType::W, pos) &&
+               (! g.isLegal(ActionType::SE, pos)) &&
+               (! g.isLegal(ActionType::SW, pos)) &&
+               (! g.isLegal(ActionType::S, pos)) &&
                g.isLegal(ActionType::STAY, pos);
     }
     ec.result(pass);

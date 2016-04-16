@@ -403,6 +403,27 @@ namespace Gaming {
     const ActionType Game::reachSurroundings(const Position &from, const Position &to)
     {
         // reach surroundings? we're passing a previous location and a next location.
+        ActionType do_it;
+        if (from.x > to.x && from.y > to.y)
+            do_it = NW;
+        if (from.x > to.x && from.y == to.y)
+            do_it = N;
+        if (from.x > to.x && from.y < to.y)
+            do_it = NE;
+        if (from.x == to.x && from.y > to.y)
+            do_it = W;
+        if (from.x == to.x && from.y == to.y)
+            do_it = STAY;
+        if (from.x == to.x && from.y < to.y)
+            do_it = E;
+        if (from.x < to.x && from.y > to.y)
+            do_it = SW;
+        if (from.x < to.x && from.y == to.y)
+            do_it = S;
+        if (from.x < to.x && from.y < to.y)
+            do_it = SE;
+
+        return do_it;
 
     }
 
@@ -462,6 +483,41 @@ namespace Gaming {
     const Position Game::move(const Position &pos, const ActionType &ac) const // note: assumes legal, use with isLegal()
     {
         // action based on location is the most logical assumption
+       if (isLegal(ac, pos)) {
+           //int oldPos = (pos.x * __width) + pos.y;
+           if (ac == NE) {
+               Position newP(pos.x - 1, pos.y + 1);
+               return newP;
+           }
+           if (ac == N) {
+               Position newP(pos.x - 1, pos.y);
+               return newP;
+           }
+           if (ac == NW) {
+               Position newP(pos.x - 1, pos.y - 1);
+               return newP;
+           }
+           if (ac == E) {
+               Position newP(pos.x, pos.y + 1);
+               return newP;
+           }
+           if (ac == W) {
+               Position newP(pos.x, pos.y - 1);
+               return newP;
+           }
+           if (ac == SE) {
+               Position newP(pos.x + 1, pos.y + 1);
+               return newP;
+           }
+           if (ac == S) {
+               Position newP(pos.x + 1, pos.y);
+               return newP;
+           }
+           if (ac == SW) {
+               Position newP(pos.x + 1, pos.y - 1);
+               return newP;
+           }
+       }
     }
 
     void Game::round()   // play a single round
