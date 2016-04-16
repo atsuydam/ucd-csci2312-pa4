@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "Game.h"
 #include "Piece.h"
 #include "Resource.h"
@@ -92,7 +93,66 @@ namespace Gaming {
         __numInitResources = (__width * __height) / NUM_INIT_RESOURCE_FACTOR;
         // We have many agents and resources we need. Will the function choose the type at
         // random?
+        // simple pseudo-random number generator
+// sufficient for our casual purposes
+        std::default_random_engine gen;
+        std::uniform_int_distribution<int> d(0, __width * __height);
 
+        int numStrategic = __numInitAgents / 2;
+        if (__numInitAgents % 2 == 1)
+            numStrategic++;
+// populate Strategic agents
+        while (numStrategic > 0)
+        {
+            int i = d(gen); // random index in the grid vector
+            if (__grid[i] == nullptr)
+            { // is position empty
+                Position pos(i / __width, i % __width);
+                __grid[i] = new Strategic(*this, pos, Game::STARTING_AGENT_ENERGY);
+                numStrategic--;
+            }
+        }
+
+        int numSimple = __numInitAgents / 2;
+// populate simple agents
+        while (numSimple > 0)
+        {
+            int i = d(gen); // random index in the grid vector
+            if (__grid[i] == nullptr)
+            { // is position empty
+                Position pos(i / __width, i % __width);
+                __grid[i] = new Simple(*this, pos, Game::STARTING_AGENT_ENERGY);
+                numSimple--;
+            }
+        }
+
+        int numAdvantages = __numInitResources / 2;
+// populate Advantage resources
+        while (numAdvantages > 0)
+        {
+            int i = d(gen); // random index in the grid vector
+            if (__grid[i] == nullptr)
+            { // is position empty
+                Position pos(i / __width, i % __width);
+                __grid[i] = new Advantage(*this, pos, Game::STARTING_RESOURCE_CAPACITY);
+                numAdvantages--;
+            }
+        }
+
+        int numFood = __numInitResources / 2;
+        if (__numInitResources % 2 == 1)
+            numFood++;
+// populate food resources
+        while (numFood > 0)
+        {
+            int i = d(gen); // random index in the grid vector
+            if (__grid[i] == nullptr)
+            { // is position empty
+                Position pos(i / __width, i % __width);
+                __grid[i] = new Food(*this, pos, Game::STARTING_RESOURCE_CAPACITY);
+                numFood--;
+            }
+        }
     }
 
     // Getters. If these were as simple as the first two with only a return he would have implemented them so...
@@ -298,6 +358,7 @@ namespace Gaming {
     const Surroundings Game::getSurroundings(const Position &pos) const
     {
         // return the surroundings for the passed position
+
     }
 
     // gameplay methods
@@ -350,7 +411,8 @@ namespace Gaming {
                 }
                 else
                 {
-                    os << "[" << game.__grid[count] << "]";
+                    // this is going to cause issues later when the game is producing 4 digit ids
+                    os << "[" << *game.__grid[count] << " ]";
                 }
                 count++;
             }
