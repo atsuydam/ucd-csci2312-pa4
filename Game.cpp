@@ -402,13 +402,61 @@ namespace Gaming {
     // gameplay methods
     const ActionType Game::reachSurroundings(const Position &from, const Position &to)
     {
-        // reach surroundings? we're passing a previous location adn a next location.
+        // reach surroundings? we're passing a previous location and a next location.
+
     }
 
     bool Game::isLegal(const ActionType &ac, const Position &pos) const
     {
-        // now we're taking in an action type. Eventually I wall come across this elusive function and
-        // learn what it does.
+        bool legal_move = true;
+        Surroundings survey = getSurroundings(pos);
+        // every fucking switch I've written come back with an error. Every fucking if statement the same. What the FUCK do you want?!
+        if (ac == NE)
+        {
+            if (survey.array[2] == INACCESSIBLE)
+                legal_move = false;
+        }
+        if (ac == NW)
+        {
+            if (survey.array[0] == INACCESSIBLE)
+                legal_move = false;
+        }
+        if (ac == N)
+        {
+            if (survey.array[1] == INACCESSIBLE)
+                legal_move = false;
+        }
+        if (ac == W)
+        {
+            if (survey.array[3] == INACCESSIBLE)
+                legal_move = false;
+        }
+        if (ac == STAY)
+        {
+            if (survey.array[4] == INACCESSIBLE)
+                legal_move = false;
+        }
+        if (ac == E)
+        {
+            if (survey.array[5] == INACCESSIBLE)
+                legal_move = false;
+        }
+        if (ac == SE)
+        {
+            if (survey.array[8] == INACCESSIBLE)
+                legal_move = false;
+        }
+        if (ac == S)
+        {
+            if (survey.array[7] == INACCESSIBLE)
+                legal_move = false;
+        }
+        if (ac == SW)
+        {
+            if (survey.array[6] == INACCESSIBLE)
+                legal_move = false;
+        }
+        return legal_move;
     }
 
     const Position Game::move(const Position &pos, const ActionType &ac) const // note: assumes legal, use with isLegal()
