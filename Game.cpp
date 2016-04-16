@@ -213,6 +213,8 @@ namespace Gaming {
         // alright, returning a piece, taking in x and y, which are usually coordinates
         // Convert the x and y into position (x*height)+ y = position, allows __grid[position]
         unsigned int pos = (x *__width) + y;
+        if (__grid[pos] == nullptr)
+            throw PositionEmptyEx(x, y);
         return __grid[pos];
     }
 

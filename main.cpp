@@ -37,7 +37,7 @@ int main() {
 //    test_piece_interaction(ec, NumIters);
 //
 //    // surroundings tests
-//    test_surroundings_smoketest(ec);
+    test_surroundings_smoketest(ec);
 //
 //    // action tests
 //    test_action_smoketest(ec);
@@ -45,7 +45,7 @@ int main() {
 //    // game tests
     test_game_smoketest(ec);
     test_game_populate(ec, NumIters);
-//    test_game_getpiece(ec, NumIters);
+    test_game_getpiece(ec, NumIters);
     test_game_print(ec, NumIters);
 //    test_game_randomization(ec, NumIters);
 //    test_game_play(ec, NumIters);
