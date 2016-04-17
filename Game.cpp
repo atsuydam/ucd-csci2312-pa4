@@ -2,6 +2,8 @@
 #include <iomanip>
 #include <sstream>
 #include <fstream>
+#include <set>
+#include <bits/stl_set.h>
 #include "Game.h"
 #include "Piece.h"
 #include "Resource.h"
@@ -86,6 +88,11 @@ namespace Gaming {
     Game::~Game()
     {
         // delete all the things. ok, delete the creation of vector<Piece *> grid
+        for (auto position = __grid.begin(); position != __grid.end(); ++position) {
+            if (*position != nullptr) {
+                delete *position;
+            }
+        }
     }
 
     void Game::populate() // populate the grid (used in automatic random initialization of a Game)
@@ -524,24 +531,82 @@ namespace Gaming {
 
     void Game::round()   // play a single round
     {
-        // play a round, like the man said
-        // this may be the most difficult function to write and will call many, many others.
-        ActionType move_act;
-        for (int i = 0; i < __grid.size(); i++) {
-            if (__grid[i] != nullptr) {
-                __grid[i]->setTurned(!__grid[i]->getTurned());
-                move_act = __grid[i]->takeTurn(getSurroundings(__grid[i]->getPosition()));
-                Position move_p = move(__grid[i]->getPosition(), move_act);
-                __grid[i]->setPosition(move_p);
+        // play a round, like the man said std::set is supposed to help with this instead of going through the grid.
+        std::set<Piece *> pawns;
+        ActionType my_turn;
+        // collect all the pieces that need a turn, anything without a null ptr.
+        for (auto it = __grid.begin(); it != __grid.end(); ++it) {
+            if (*it) {
+                pawns.insert(pawns.end(), *it);
+                std::cout << pawns.size() << std::endl;
             }
-
         }
+
+        for (auto gameTime = pawns.begin(); gameTime != pawns.end(); gameTime++) {
+            std::cout << "I entered the play round " << std::endl;
+            if (!(*gameTime)->getTurned()) {
+                std::cout << " And I got passed the first turn test" << std::endl;
+                // grab a piece at a time, change their turn status to true
+                (*gameTime)->setTurned(true);
+                Position curr_pos, move_pos;
+                my_turn = (*gameTime)->takeTurn(getSurroundings((*gameTime)->getPosition()));
+                move_pos = move(curr_pos, my_turn);
+
+                // have that item take a turn. Call interact if something is there?
+                if (move_pos.x != curr_pos.x || move_pos.y != curr_pos.y) {
+                    std::cout << "I want to move!" << std::endl;
+                    Piece *enemy = __grid[(move_pos.x * __width) + move_pos.y];
+                    if (enemy) {
+                        std::cout << "I made a friend " << std::endl;
+                        (*enemy) * *(*gameTime);
+                        //make them trade places, I suppose. if the other lost it'll be gone soon anyway
+                        __grid[(move_pos.x * __width) + move_pos.y] = (*gameTime);
+                        __grid[(curr_pos.x * __width) + curr_pos.y] = enemy;
+                    }
+                    else {
+                        std::cout << "There was nothing there" << std::endl;
+                        (*gameTime)->setPosition(move_pos);
+                        std::cout << "position set" << std::endl;
+                        __grid[(move_pos.x * __width) + move_pos.y] = (*gameTime);
+                        std::cout << "moved grid position" << std::endl;
+                        __grid[(curr_pos.x * __width) + curr_pos.y] = nullptr;
+                        std::cout << "set null ptr" << std::endl;
+                    }
+                }
+                std::cout << "I'm still here" << std::endl;
+            }
+            std::cout << "yep, I'm still here" << std::endl;
+        }
+
+        // age objects, delete if no longer viable
+        // set turn to false for all remaining pieces.
+        for (auto gameTime = pawns.begin(); gameTime != pawns.end(); gameTime++) {
+            std::cout << " I don't want to get older." << std::endl;
+            (*gameTime)->setTurned(false);
+            std::cout << "I'm still here and now false" << std::endl;
+            (*gameTime)->age();
+            std::cout << "I'm still here but older" << std::endl;
+        }
+        // delete anything that has been interacted with and became nonviable
+        for (int i = 0; i < __grid.size(); i++) {
+            if (__grid[i] && !__grid[i]->isViable()) {
+                delete __grid[i];
+                __grid[i] = nullptr;
+                std::cout << "clean up" << std::endl;
+            }
+        }
+        std::cout << "clean up" << std::endl;
+        // increment round
+        __round++;
+
     }
 
     void Game::play(bool verbose)
     {
+        __verbose = verbose;
         // verbose it what prints the game play to the screen. If changed in the tests
         // source pages to change it will display every round of the board.
+
     }
 
     // And a friend function

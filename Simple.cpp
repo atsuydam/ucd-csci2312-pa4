@@ -17,6 +17,7 @@ namespace Gaming {
     Simple::~Simple()
     {
         // delete something
+
     }
 
     void Simple::print(std::ostream &os) const

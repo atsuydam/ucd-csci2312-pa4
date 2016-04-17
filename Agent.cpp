@@ -24,8 +24,6 @@ namespace Gaming {
     void Agent::age()
     {
         __energy -= AGENT_FATIGUE_RATE;
-        if (__energy <= 0)
-            finish();
     }
 
 
