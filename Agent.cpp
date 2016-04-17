@@ -24,21 +24,30 @@ namespace Gaming {
     void Agent::age()
     {
         __energy -= AGENT_FATIGUE_RATE;
+        if (__energy <= 0)
+            finish();
     }
 
 
     Piece & Agent::operator*(Piece &other)
     {
-
+        return other.interact(this);
     }
 
-    Piece & Agent::interact(Agent *)
+    Piece & Agent::interact(Agent *challenger)
     {
-
+        double temp = __energy;
+        this->__energy -= challenger->__energy;
+        if (__energy <= 0)
+            this->finish();
+        challenger->__energy -= temp;
+        if (challenger->__energy <= 0)
+            challenger->finish();
     }
 
-    Piece & Agent::interact(Resource *)
+    Piece & Agent::interact(Resource *consumed)
     {
-
+        __energy += consumed->getCapacity();
+        //consumed->finish();
     }
 }

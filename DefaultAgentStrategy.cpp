@@ -17,6 +17,7 @@ namespace Gaming {
     // Look, another action type that needs a header/ title/whatever
     ActionType DefaultAgentStrategy::operator()(const Surroundings &s) const
     {
+
         // this still needs the position randomizer function
         ActionType action;
         for (int i=0 ; i < 9; i++)
