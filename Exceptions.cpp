@@ -79,7 +79,7 @@ namespace Gaming {
     // Functions for Position Ex
     void PositionEx::__print_args(std::ostream &os) const
     {
-
+        os << __name;
     }
 
     PositionEx::PositionEx(unsigned x, unsigned y)

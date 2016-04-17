@@ -526,6 +526,16 @@ namespace Gaming {
     {
         // play a round, like the man said
         // this may be the most difficult function to write and will call many, many others.
+        ActionType move_act;
+        for (int i = 0; i < __grid.size(); i++) {
+            if (__grid[i] != nullptr) {
+                __grid[i]->setTurned(!__grid[i]->getTurned());
+                move_act = __grid[i]->takeTurn(getSurroundings(__grid[i]->getPosition()));
+                Position move_p = move(__grid[i]->getPosition(), move_act);
+                __grid[i]->setPosition(move_p);
+            }
+
+        }
     }
 
     void Game::play(bool verbose)

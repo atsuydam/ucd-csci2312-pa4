@@ -47,7 +47,7 @@ int main() {
     test_game_populate(ec, NumIters);
     test_game_getpiece(ec, NumIters);
     test_game_print(ec, NumIters);
-//    test_game_randomization(ec, NumIters);
+    test_game_randomization(ec, NumIters);
 //    test_game_play(ec, NumIters);
 
     return 0;
