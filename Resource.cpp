@@ -28,7 +28,7 @@ namespace Gaming {
     void Resource::age()
     {
         __capacity = __capacity / RESOURCE_SPOIL_FACTOR;
-        if (__capacity < 1)
+        if (__capacity < 0.01)
             finish();
     }
 
@@ -44,13 +44,12 @@ namespace Gaming {
     // How do I title these???
     Piece & Resource::operator*(Piece &other)
     {
-        // Figure out what to do with that override bit that he talked about for .2 secs
+        return other.interact(this);
     }
 
     Piece &Resource::interact(Agent *greedy)
     {
-        // agent grabs resource, it either adds to health or strength. Done.
-        //greedy->addEnergy(__capacity);
+        __capacity = 0;
         finish();
     }
 

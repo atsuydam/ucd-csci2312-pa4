@@ -45,7 +45,7 @@ namespace Gaming {
 
     Piece & Agent::interact(Resource *consumed)
     {
-        __energy += consumed->getCapacity();
+        addEnergy(consumed->getCapacity());
         consumed->consume();
     }
 }

@@ -88,11 +88,11 @@ namespace Gaming {
     Game::~Game()
     {
         // delete all the things. ok, delete the creation of vector<Piece *> grid
-        for (auto position = __grid.begin(); position != __grid.end(); ++position) {
-            if (*position != nullptr) {
-                delete *position;
-            }
-        }
+//        for (auto position = __grid.begin(); position != __grid.end(); ++position) {
+//            if (*position != nullptr) {
+//                delete *position;
+//            }
+//        }
     }
 
     void Game::populate() // populate the grid (used in automatic random initialization of a Game)
@@ -548,60 +548,43 @@ namespace Gaming {
                 // make variables for position.
                 Position curr_pos, move_pos;
                 curr_pos = (*gameTime)->getPosition();
-                std::cout << " The current position is " << curr_pos.x << ", " << curr_pos.y << std::endl;
                 // grab the action type to move the agent
                 my_turn = (*gameTime)->takeTurn(getSurroundings((*gameTime)->getPosition()));
                 move_pos = move(curr_pos, my_turn);
 
                 // have that item take a turn. Call interact if something is there?
                 if (move_pos.x != curr_pos.x || move_pos.y != curr_pos.y) {
-                    std::cout << "I want to move!" << std::endl;
                     Piece *enemy = __grid[(move_pos.x * __width) + move_pos.y];
-                    if (enemy) {
-                        std::cout << "I made a friend " << std::endl;
+                    if (enemy != nullptr) {
                         (*enemy) * *(*gameTime);
                         //make them trade places, I suppose. if the other lost it'll be gone soon anyway
                         __grid[(move_pos.x * __width) + move_pos.y] = (*gameTime);
                         __grid[(curr_pos.x * __width) + curr_pos.y] = enemy;
                     }
                     else {
-                        std::cout << "There was nothing there" << std::endl;
                         (*gameTime)->setPosition(move_pos);
-                        std::cout << "position set" << move_pos.x << "\t>" << move_pos.y << "\t" << curr_pos.x <<
-                        "\t" << curr_pos.y << std::endl;
                         __grid[(move_pos.x * __width) + move_pos.y] = (*gameTime);
-                        std::cout << "moved grid position" << std::endl;
                         __grid[(curr_pos.x * __width) + curr_pos.y] = nullptr;
-                        std::cout << "set null ptr" << std::endl;
                     }
                 }
-                std::cout << "I'm still here" << std::endl;
             }
-            std::cout << "yep, I'm still here" << std::endl;
         }
 
         // age objects, delete if no longer viable
         // set turn to false for all remaining pieces.
         for (auto gameTime = pawns.begin(); gameTime != pawns.end(); gameTime++) {
-            std::cout << " I don't want to get older." << std::endl;
             (*gameTime)->setTurned(false);
-            std::cout << "I'm still here and now false" << std::endl;
             (*gameTime)->age();
-            std::cout << "I'm still here but older" << std::endl;
         }
         // delete anything that has been interacted with and became nonviable
-//        for (int i = 0; i < __grid.size(); i++) {
-//            if (__grid[i] != nullptr)
-//            {
-//                if (!__grid[i]->isViable())
-//                {
-//                    delete __grid[i];
-//                    __grid[i] = nullptr;
-//                    std::cout << "clean up" << std::endl;
-//                }
-//            }
-//        }
-        std::cout << "clean up" << std::endl;
+        for (int i = 0; i < __grid.size(); i++) {
+            if (__grid[i] != nullptr) {
+                if (!__grid[i]->isViable()) {
+                    //delete __grid[i];
+                    __grid[i] = nullptr;
+                }
+            }
+        }
         // increment round
         __round++;
 
@@ -612,6 +595,15 @@ namespace Gaming {
         __verbose = verbose;
         // verbose it what prints the game play to the screen. If changed in the tests
         // source pages to change it will display every round of the board.
+        __status = PLAYING;
+
+        while (getNumResources() > 0) {
+            round();
+        }
+        if (getNumResources() <= 0) {
+            __status = OVER;
+            //delete &__grid;
+        }
 
     }
 
