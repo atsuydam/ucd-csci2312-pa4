@@ -82,7 +82,7 @@ namespace Gaming {
         static const ActionType reachSurroundings(const Position &from, const Position &to); // note: STAY by default
         static const Position randomPosition(const std::vector<int> &positions) { // note: from Surroundings as an array
 // I've made a change here, what function is this calling?
-//            return __posRandomizer(positions);
+            return __posRandomizer(positions);
         }
 
         bool isLegal(const ActionType &ac, const Position &pos) const;

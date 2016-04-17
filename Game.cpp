@@ -21,6 +21,8 @@ namespace Gaming {
     const double Game::STARTING_AGENT_ENERGY = 20;
     const double Game::STARTING_RESOURCE_CAPACITY = 10;
 
+    PositionRandomizer Game::__posRandomizer = PositionRandomizer();
+
 // constructors and de-constructor
     Game::Game()
     {
@@ -52,7 +54,6 @@ namespace Gaming {
         __numInitResources = 0;
 
         // I have a 1-d array of Piece pointers. I'll have to use conversion for 2-d to (x,y)
-
         for (int i=0; i < (__width * __height); i++)
         {
             __grid.push_back(nullptr);
@@ -62,7 +63,6 @@ namespace Gaming {
         {
             populate();
         }
-
         __round = 0;
         __status = NOT_STARTED;
         __verbose = false;
@@ -143,6 +143,8 @@ namespace Gaming {
 
         int numFood = __numInitResources / 2;
         if (__numInitResources % 2 == 1)
+            numFood++;
+        if (__width > 8)
             numFood++;
 // populate food resources
         while (numFood > 0)

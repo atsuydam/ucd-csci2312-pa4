@@ -17,98 +17,63 @@ namespace Gaming {
     // Look, another action type that needs a header/ title/whatever
     ActionType DefaultAgentStrategy::operator()(const Surroundings &s) const
     {
+        // Like simple but with different priorities
+        std::vector<int> potential_pos;
+        // reset the position to the center of the grid.
+        Position curr_pos(1, 1);
+        Position new_pos;
+        PositionRandomizer position;
 
-        // this still needs the position randomizer function
-        ActionType action;
-        for (int i=0 ; i < 9; i++)
+        // look for loot first
+        for (int i = 0; i < 9; i++)
         {
-            if (i == 0)
-                action = NW;
-            if (i == 1)
-                action = N;
-            if (i == 2)
-                action = NE;
-            if (i == 3)
-                action = W;
-            if (i == 5)
-                action = E;
-            if (i == 6)
-                action = SW;
-            if (i == 7)
-                action = S;
-            if (i == 8)
-                action = SE;
             if (s.array[i] == ADVANTAGE) {
-                return action;
+                potential_pos.push_back(i);
             }
         }
-        for (int i=0 ; i < 9; i++)
+
+        if (potential_pos.size() > 0)
         {
-            if (i == 0)
-                action = NW;
-            if (i == 1)
-                action = N;
-            if (i == 2)
-                action = NE;
-            if (i == 3)
-                action = W;
-            if (i == 5)
-                action = E;
-            if (i == 6)
-                action = SW;
-            if (i == 7)
-                action = S;
-            if (i == 8)
-                action = SE;
+            new_pos = Game::randomPosition(potential_pos);
+            return Game::reachSurroundings(curr_pos, new_pos);
+        }
+        // look for food to boost energy next
+        for (int i = 0; i < 9; i++) {
             if (s.array[i] == FOOD) {
-                return action;
+                potential_pos.push_back(i);
             }
         }
-        for (int i=0 ; i < 9; i++)
+
+        if (potential_pos.size() > 0)
         {
-            if (i == 0)
-                action = NW;
-            if (i == 1)
-                action = N;
-            if (i == 2)
-                action = NE;
-            if (i == 3)
-                action = W;
-            if (i == 5)
-                action = E;
-            if (i == 6)
-                action = SW;
-            if (i == 7)
-                action = S;
-            if (i == 8)
-                action = SE;
+            new_pos = Game::randomPosition(potential_pos);
+            return Game::reachSurroundings(curr_pos, new_pos);
+        }
+
+        // look for somewhere safe to hide
+        for (int i = 0; i < 9; i++) {
             if (s.array[i] == EMPTY) {
-                return action;
+                potential_pos.push_back(i);
             }
         }
-        for (int i=0 ; i < 9; i++)
+        if (potential_pos.size() > 0)
         {
-            if (i == 0)
-                action = NW;
-            if (i == 1)
-                action = N;
-            if (i == 2)
-                action = NE;
-            if (i == 3)
-                action = W;
-            if (i == 5)
-                action = E;
-            if (i == 6)
-                action = SW;
-            if (i == 7)
-                action = S;
-            if (i == 8)
-                action = SE;
+            new_pos = Game::randomPosition(potential_pos);
+            return Game::reachSurroundings(curr_pos, new_pos);
+        }
+        // now we look for a simple to beat up
+        for (int i = 0; i < 9; i++) {
             if (s.array[i] == SIMPLE)
             {
-                return action;
+                potential_pos.push_back(i);
             }
         }
+
+        if (potential_pos.size() > 0) {
+            new_pos = Game::randomPosition(potential_pos);
+            return Game::reachSurroundings(curr_pos, new_pos);
+        }
+        // if none are available stay put
         return STAY;
     }
 }

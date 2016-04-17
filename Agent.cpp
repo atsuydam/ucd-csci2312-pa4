@@ -48,6 +48,6 @@ namespace Gaming {
     Piece & Agent::interact(Resource *consumed)
     {
         __energy += consumed->getCapacity();
-        //consumed->finish();
+        consumed->consume();
     }
 }

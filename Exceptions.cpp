@@ -110,6 +110,7 @@ namespace Gaming {
 
     PosVectorEmptyEx::PosVectorEmptyEx()
     {
-        // I don't know. I would expect a bool function or the like
+        // I do know what this is. give it a name. Name have power
+        __name = "PosVectorEmptyEx";
     }
 }

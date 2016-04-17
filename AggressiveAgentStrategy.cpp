@@ -19,100 +19,63 @@ namespace Gaming {
 
     ActionType AggressiveAgentStrategy::operator()(const Surroundings &s) const //override
     {
-        // another function I'm not sure how to head/declare/whatever. It returns an action type
-        ActionType action;
-        for (int i=0 ; i < 9; i++)
-        {
-            if (i == 0)
-                action = NW;
-            if (i == 1)
-                action = N;
-            if (i == 2)
-                action = NE;
-            if (i == 3)
-                action = W;
-            if (i == 5)
-                action = E;
-            if (i == 6)
-                action = SW;
-            if (i == 7)
-                action = S;
-            if (i == 8)
-                action = SE;
+        std::vector<int> potential_pos;
+        // reset the position to the center of the grid.
+        Position curr_pos(1, 1);
+        Position new_pos;
+        PositionRandomizer position;
 
-            if (s.array[i] == SIMPLE && __agentEnergy >= DEFAULT_AGGRESSION_THRESHOLD) {
-                return action;
+        // look for someone to pummel
+        for (int i = 0; i < 9; i++) {
+            if (__agentEnergy >= DEFAULT_AGGRESSION_THRESHOLD && (s.array[i] == SIMPLE || s.array[i] == STRATEGIC)) {
+                potential_pos.push_back(i);
             }
         }
-        for (int i=0 ; i < 9; i++)
+
+        if (potential_pos.size() > 0)
         {
-            if (i == 0)
-                action = NW;
-            if (i == 1)
-                action = N;
-            if (i == 2)
-                action = NE;
-            if (i == 3)
-                action = W;
-            if (i == 5)
-                action = E;
-            if (i == 6)
-                action = SW;
-            if (i == 7)
-                action = S;
-            if (i == 8)
-                action = SE;
+            new_pos = Game::randomPosition(potential_pos);
+            return Game::reachSurroundings(curr_pos, new_pos);
+        }
+        // look for something to pummel someone with
+        for (int i = 0; i < 9; i++) {
             if (s.array[i] == ADVANTAGE)
             {
-                return action;
+                potential_pos.push_back(i);
             }
         }
-        for (int i=0 ; i < 9; i++)
+
+        if (potential_pos.size() > 0)
         {
-            if (i == 0)
-                action = NW;
-            if (i == 1)
-                action = N;
-            if (i == 2)
-                action = NE;
-            if (i == 3)
-                action = W;
-            if (i == 5)
-                action = E;
-            if (i == 6)
-                action = SW;
-            if (i == 7)
-                action = S;
-            if (i == 8)
-                action = SE;
+            new_pos = Game::randomPosition(potential_pos);
+            return Game::reachSurroundings(curr_pos, new_pos);
+        }
+
+        // look for food so we have energy for pummeling
+        for (int i = 0; i < 9; i++) {
             if (s.array[i] == FOOD)
             {
-                return action;
+                potential_pos.push_back(i);
             }
         }
-        for (int i=0 ; i < 9; i++)
+        if (potential_pos.size() > 0)
         {
-            if (i == 0)
-                action = NW;
-            if (i == 1)
-                action = N;
-            if (i == 2)
-                action = NE;
-            if (i == 3)
-                action = W;
-            if (i == 5)
-                action = E;
-            if (i == 6)
-                action = SW;
-            if (i == 7)
-                action = S;
-            if (i == 8)
-                action = SE;
+            new_pos = Game::randomPosition(potential_pos);
+            return Game::reachSurroundings(curr_pos, new_pos);
+        }
+        // now we look for some where to rest
+        for (int i = 0; i < 9; i++) {
             if (s.array[i] == EMPTY)
             {
-                return action;
+                potential_pos.push_back(i);
             }
         }
+
+        if (potential_pos.size() > 0) {
+            new_pos = Game::randomPosition(potential_pos);
+            return Game::reachSurroundings(curr_pos, new_pos);
+        }
+        // if none are available, or we don't have the energy for pummeling
         return STAY;
     }
 

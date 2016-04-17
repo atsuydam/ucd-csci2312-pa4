@@ -21,6 +21,8 @@ namespace Gaming {
     double Resource::consume()
     {
         //Nom nom nom... Find the parent to this function.
+        __capacity = 0;
+        finish();
     }
 
     void Resource::age()
@@ -45,9 +47,11 @@ namespace Gaming {
         // Figure out what to do with that override bit that he talked about for .2 secs
     }
 
-    Piece & Resource::interact(Agent *)
+    Piece &Resource::interact(Agent *greedy)
     {
         // agent grabs resource, it either adds to health or strength. Done.
+        //greedy->addEnergy(__capacity);
+        finish();
     }
 
     Piece & Resource::interact(Resource *) // note: no interaction between resources
