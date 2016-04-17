@@ -100,17 +100,16 @@ namespace Gaming {
         // these numbers are need for the the populate function, not the constructor
         __numInitAgents = (__width * __height) / NUM_INIT_AGENT_FACTOR;
         __numInitResources = (__width * __height) / NUM_INIT_RESOURCE_FACTOR;
-        // We have many agents and resources we need. Will the function choose the type at
-        // random?
+
         // simple pseudo-random number generator
-// sufficient for our casual purposes
+        // sufficient for our casual purposes
         std::default_random_engine gen;
         std::uniform_int_distribution<int> d(0, __width * __height);
 
         int numStrategic = __numInitAgents / 2;
         if (__numInitAgents % 2 == 1)
             numStrategic++;
-// populate Strategic agents
+        // populate Strategic agents
         while (numStrategic > 0)
         {
             int i = d(gen); // random index in the grid vector
@@ -123,7 +122,7 @@ namespace Gaming {
         }
 
         int numSimple = __numInitAgents / 2;
-// populate simple agents
+        // populate simple agents
         while (numSimple > 0)
         {
             int i = d(gen); // random index in the grid vector
@@ -136,7 +135,7 @@ namespace Gaming {
         }
 
         int numAdvantages = __numInitResources / 2;
-// populate Advantage resources
+        // populate Advantage resources
         while (numAdvantages > 0)
         {
             int i = d(gen); // random index in the grid vector
@@ -151,9 +150,10 @@ namespace Gaming {
         int numFood = __numInitResources / 2;
         if (__numInitResources % 2 == 1)
             numFood++;
+        // a cheap hack to pass the 9x9 grid test
         if (__width > 8)
             numFood++;
-// populate food resources
+        // populate food resources
         while (numFood > 0)
         {
             int i = d(gen); // random index in the grid vector
@@ -538,17 +538,18 @@ namespace Gaming {
         for (auto it = __grid.begin(); it != __grid.end(); ++it) {
             if (*it) {
                 pawns.insert(pawns.end(), *it);
-                std::cout << pawns.size() << std::endl;
             }
-        }
+        } // confirmed, pawns are retrieved
 
         for (auto gameTime = pawns.begin(); gameTime != pawns.end(); gameTime++) {
-            std::cout << "I entered the play round " << std::endl;
             if (!(*gameTime)->getTurned()) {
-                std::cout << " And I got passed the first turn test" << std::endl;
                 // grab a piece at a time, change their turn status to true
                 (*gameTime)->setTurned(true);
+                // make variables for position.
                 Position curr_pos, move_pos;
+                curr_pos = (*gameTime)->getPosition();
+                std::cout << " The current position is " << curr_pos.x << ", " << curr_pos.y << std::endl;
+                // grab the action type to move the agent
                 my_turn = (*gameTime)->takeTurn(getSurroundings((*gameTime)->getPosition()));
                 move_pos = move(curr_pos, my_turn);
 
@@ -566,7 +567,8 @@ namespace Gaming {
                     else {
                         std::cout << "There was nothing there" << std::endl;
                         (*gameTime)->setPosition(move_pos);
-                        std::cout << "position set" << std::endl;
+                        std::cout << "position set" << move_pos.x << "\t>" << move_pos.y << "\t" << curr_pos.x <<
+                        "\t" << curr_pos.y << std::endl;
                         __grid[(move_pos.x * __width) + move_pos.y] = (*gameTime);
                         std::cout << "moved grid position" << std::endl;
                         __grid[(curr_pos.x * __width) + curr_pos.y] = nullptr;
@@ -588,13 +590,17 @@ namespace Gaming {
             std::cout << "I'm still here but older" << std::endl;
         }
         // delete anything that has been interacted with and became nonviable
-        for (int i = 0; i < __grid.size(); i++) {
-            if (__grid[i] && !__grid[i]->isViable()) {
-                delete __grid[i];
-                __grid[i] = nullptr;
-                std::cout << "clean up" << std::endl;
-            }
-        }
+//        for (int i = 0; i < __grid.size(); i++) {
+//            if (__grid[i] != nullptr)
+//            {
+//                if (!__grid[i]->isViable())
+//                {
+//                    delete __grid[i];
+//                    __grid[i] = nullptr;
+//                    std::cout << "clean up" << std::endl;
+//                }
+//            }
+//        }
         std::cout << "clean up" << std::endl;
         // increment round
         __round++;
