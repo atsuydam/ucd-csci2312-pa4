@@ -4,7 +4,7 @@
 #include "Resource.h"
 
 namespace Gaming {
-    const double RESOURCE_SPOIL_FACTOR = 1.2;
+    const double Resource::RESOURCE_SPOIL_FACTOR = 1.2;
 
     Resource::Resource(const Game &g, const Position &p, double capacity)
             : Piece (g, p)
@@ -25,12 +25,14 @@ namespace Gaming {
 
     void Resource::age()
     {
-        // set the age?
+        __capacity -= RESOURCE_SPOIL_FACTOR;
     }
 
     ActionType Resource::takeTurn(const Surroundings &s) const
     {
         // Action type? Surroundings? Resources don't give a shit about their surroundings and do nothing until picked up
+        ActionType stay = STAY;
+        return stay;
     }
 
 

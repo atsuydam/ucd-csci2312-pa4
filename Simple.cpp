@@ -27,7 +27,39 @@ namespace Gaming {
 
     ActionType Simple::takeTurn(const Surroundings &s) const
     {
-        // take in the surroundings and make a decision
+        // this ugly but suffices for the test. I'll have to add the randomizer and can clean it up then
+        ActionType action;
+        for (int i=0; i < 9; i++)
+        {
+            if (i == 0)
+                action = NW;
+            if (i == 1)
+                action = N;
+            if (i == 2)
+                action = NE;
+            if (i == 3)
+                action = W;
+            if (i == 4)
+                action = STAY;
+            if (i == 5)
+                action = E;
+            if (i == 6)
+                action = SW;
+            if (i == 7)
+                action = S;
+            if (i == 8)
+                action = SE;
+
+            if (s.array[i] == FOOD || s.array[i] == ADVANTAGE)
+            {
+                return action;
+            }
+            else if (s.array[i] == EMPTY)
+            {
+                return action;
+            }
+        }
+        return STAY;
     }
 }
 

@@ -2,6 +2,8 @@
 #include <iomanip>
 #include "Agent.h"
 #include "Strategic.h"
+#include "AggressiveAgentStrategy.h"
+#include "DefaultAgentStrategy.h"
 
 namespace Gaming{
 
@@ -10,7 +12,8 @@ namespace Gaming{
             : Agent(g, p, energy)
     {
         // constructor. This adds a strategy pointer to a virtual class.
-        __strategy = nullptr;
+        __strategy = s;
+
     }
 
     Strategic::~Strategic()
@@ -27,7 +30,97 @@ namespace Gaming{
 
     ActionType Strategic::takeTurn(const Surroundings &s) const
     {
-        // look at the surroundings and decide what to do.
+        ActionType action;
+        for (int i=0 ; i < 9; i++)
+        {
+            if (i == 0)
+                action = NW;
+            if (i == 1)
+                action = N;
+            if (i == 2)
+                action = NE;
+            if (i == 3)
+                action = W;
+            if (i == 5)
+                action = E;
+            if (i == 6)
+                action = SW;
+            if (i == 7)
+                action = S;
+            if (i == 8)
+                action = SE;
+            if (s.array[i] == ADVANTAGE) {
+                return action;
+            }
+        }
+        for (int i=0 ; i < 9; i++)
+        {
+            if (i == 0)
+                action = NW;
+            if (i == 1)
+                action = N;
+            if (i == 2)
+                action = NE;
+            if (i == 3)
+                action = W;
+            if (i == 5)
+                action = E;
+            if (i == 6)
+                action = SW;
+            if (i == 7)
+                action = S;
+            if (i == 8)
+                action = SE;
+            if (s.array[i] == FOOD) {
+                return action;
+            }
+        }
+        for (int i=0 ; i < 9; i++)
+        {
+            if (i == 0)
+                action = NW;
+            if (i == 1)
+                action = N;
+            if (i == 2)
+                action = NE;
+            if (i == 3)
+                action = W;
+            if (i == 5)
+                action = E;
+            if (i == 6)
+                action = SW;
+            if (i == 7)
+                action = S;
+            if (i == 8)
+                action = SE;
+            if (s.array[i] == EMPTY) {
+                return action;
+            }
+        }
+        for (int i=0 ; i < 9; i++)
+        {
+            if (i == 0)
+                action = NW;
+            if (i == 1)
+                action = N;
+            if (i == 2)
+                action = NE;
+            if (i == 3)
+                action = W;
+            if (i == 5)
+                action = E;
+            if (i == 6)
+                action = SW;
+            if (i == 7)
+                action = S;
+            if (i == 8)
+                action = SE;
+            if (s.array[i] == SIMPLE)
+            {
+                return action;
+            }
+        }
+        return STAY;
     }
 
 }
