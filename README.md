@@ -1,3 +1,4 @@
+
 ## CSCI 2312: Programming Assignment 4
 
 _inheritance, polymorphism, board games, randomization_
@@ -151,7 +152,7 @@ The behavior of the `Piece`-s is based on what's around them. The `Surroundings`
 | (-1,-1) | (-1,0) | (-1,1) |
 | (0,-1) | (x,y) | (0,1) |
 | (1,-1) | (1,0) | (1,1) |
- 
+
 
 Surroundings holds an array of length 9 and the indices correspond to the positions around a Piece as follows:
 
@@ -169,7 +170,7 @@ The behavior of `Piece`-s is based on **actions**, which are picked by each `Pie
 
 ##### 3.1 Action
 
-Available actions are captured in the enumerated class `ActionType`: `N`, `NE`, `NW`, `E`, `W`, `SE`, `SW`, `S`, and `STAY`. The compass directions correspond to the 8 directions a `Piece` can move in a grid from its current position. `STAY` means no motion, i.e. stay where you are. 
+Available actions are captured in the enumerated class `ActionType`: `N`, `NE`, `NW`, `E`, `W`, `SE`, `SW`, `S`, and `STAY`. The compass directions correspond to the 8 directions a `Piece` can move in a grid from its current position. `STAY` means no motion, i.e. stay where you are.
 
 `Resource`-s don't move so they always return `STAY`.
 
@@ -264,16 +265,16 @@ Game::STARTING_AGENT_ENERGY = 20
 Game::STARTING_RESOURCE_CAPACITY = 10
 Resource::RESOURCE_SPOIL_FACTOR = 1.2
 Simple::SIMPLE_ID = 'S'
-Strategic::STRATEGIC_ID = 'T' 
+Strategic::STRATEGIC_ID = 'T'
 ```
 
 #### V. Test suite
 
 The `main.cpp`, `GamingTests.h`, `GamingTests.cpp`, `ErrorContext.h`, and `ErrorContext.cpp` contain the test suite for PA4. There is nothing to change here except to comment out tests in `main.cpp` that you haven't reached as you implement incrementally.
 
-There are tests that generate exceptions which are caught and reported to `std::cerr`, which is not temprally interleaved with `std::out`. This may cause the exceptions to appear in "unexpected" places relative to the handler code. Note that this is only an artifact of the different regimes of flushing of the two output stream objects. 
+There are tests that generate exceptions which are caught and reported to `std::cerr`, which is not temprally interleaved with `std::out`. This may cause the exceptions to appear in "unexpected" places relative to the handler code. Note that this is only an artifact of the different regimes of flushing of the two output stream objects.
 
-Note that `Game` play tests can be declared `verbose` to print out the `Game` rounds. This is for you to implement. 
+Note that `Game` play tests can be declared `verbose` to print out the `Game` rounds. This is for you to implement.
 
 Finally, note that, due to the randomization mentioned above, the three runs of a `verbose == true` `Game` play test are likely to differ (i.e. the course of the `Game` is different).
 
@@ -317,11 +318,11 @@ The `Game` creates `Agent`-s with `STARTING_AGENT_ENERGY` and `Resource`-s with 
 Upon interaction between two `Piece`-s, energy/capacity is transferred as follows:
 
 1. When two Agent-s interact, their energies are compared:
-  1. If equal, both Agent-s call Piece::finish() and are taken out of the Game at the end of the round.  
+  1. If equal, both Agent-s call Piece::finish() and are taken out of the Game at the end of the round.
   2. If unequal, the Agent with the larger wins, the smaller energy is subtracted from its energy, and the losing Agent calls Piece::finish() and is taken out of the Game at the end of the round.
 
 2. When an Agent and a Resource interact, the Resource-s capacity is added to the Agent-s energy, the Resource calls Piece::finish() and is taken out of the Game at the end of the round. Notice that Resource::getCapacity is virtual and Advantage overrides it. The amount of capacity that is added to the Agent's energy is as follows:
-  1. For Food, its capacity.  
+  1. For Food, its capacity.
   2. For Advantage, its capacity * `ADVANTAGE_MULT_FACTOR`.
 
 For the implementation of the `Piece::operator*()`, take a look at [this](https://github.com/ivogeorg/ucd-csci2312-pa4/blob/master/examples/virtual_operator.cpp) page.
@@ -451,10 +452,10 @@ int main() {
 
 In particular, notice that `std::set::insert()` does not invalidate any iterators, and `std::set::erase()` only invalidates the iterator to the current element, returning an iterator to the next element. More on `std::set` in the [C++ Reference](http://en.cppreference.com/w/cpp/container/set).
 
-* * * 
+* * *
 
 #### VII. TODO
 
 _This section concerns future revisions of this assignment._
 
-1. (Section [6.3](https://github.com/ivogeorg/ucd-csci2312-pa4/blob/master/README.md#63-piece-viability-energy-capacity-aging-finishing)) `Piece::finish()` is called by any `Resource` which gets consumed or `Agent` which loses a challenge with another `Agent`. Specifically, it is called in the implementation of the double-dispatch `virtual` interaction operator `operator*()`. See next section for details on the operator. **TODO: This is a game rule, and therefore should be _pulled up_ to the abstract classes. The leaf classes should not be relied upon to implement the game rules faithfully. This will open the possibility for an open implementation of leaf classes by students and team tournaments.**
+1. (Section [6.3](https://github.com/ivogeorg/ucd-csci2312-pa4/blob/master/README.md#63-piece-viability-energy-capacity-aging-finishing)) `Piece::finish()` is called by any `Resource` which gets consumed or `Agent` which loses a challenge with another `Agent`. Specifically, it is called in the implementation of the double-dispatch `virtual` interaction operator `operator*()`. See next section for details on the operator. **TODO: This is a game rule, and therefore should be _pulled up_ to the abstract classes. The leaf classes should not be relied upon to implement the game rules faithfully. This will open the possibility for an open implementation of leaf classes by students and team tournaments.**p

@@ -561,6 +561,7 @@ namespace Gaming {
                     if (enemy != nullptr) {
                         *(*gameTime) * *enemy;
                         //make them trade places, I suppose. if the other lost it'll be gone soon anyway
+                        (*gameTime)->setPosition(move_pos);
                         __grid[(curr_pos.x * __width) + curr_pos.y] = enemy;
                         __grid[(move_pos.x * __width) + move_pos.y] = *(gameTime);
                     }
