@@ -32,25 +32,22 @@ namespace Gaming {
 
     Piece & Agent::operator*(Piece &other)
     {
-        std::cout << "1\n";
+
         return other.interact(this);
     }
 
     Piece & Agent::interact(Agent *challenger)
     {
-        std::cout << "3\n";
-        double temp = __energy;
-        this->__energy -= challenger->__energy;
-        if (__energy <= 0)
-            this->finish();
-        challenger->__energy -= temp;
-        if (challenger->__energy <= 0)
+        if (__energy <= challenger->__energy) {
+            finish();
+        }
+        if (challenger->__energy <= __energy) {
             challenger->finish();
+        }
     }
 
     Piece & Agent::interact(Resource *consumed)
     {
-        std::cout << "c\n";
         addEnergy(consumed->getCapacity());
         consumed->consume();
     }

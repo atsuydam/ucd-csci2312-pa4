@@ -13,8 +13,6 @@ namespace Gaming{
     {
         // constructor. This adds a strategy pointer to a virtual class.
         __strategy = s;
-
-
     }
 
     Strategic::~Strategic()

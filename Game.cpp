@@ -548,6 +548,7 @@ namespace Gaming {
             if (!(*gameTime)->getTurned()) {
                 // grab a piece at a time, change their turn status to true
                 (*gameTime)->setTurned(true);
+                (*gameTime)->age();
                 // make variables for position.
                 Position curr_pos, move_pos;
                 curr_pos = (*gameTime)->getPosition();
@@ -578,7 +579,6 @@ namespace Gaming {
         for (int i = 0; i < __grid.size(); i++) {
             if (__grid[i] != nullptr) {
                 __grid[i]->setTurned(false);
-                __grid[i]->age();
                 if (!__grid[i]->isViable()) {
                     delete __grid[i];
                     __grid[i] = nullptr;
