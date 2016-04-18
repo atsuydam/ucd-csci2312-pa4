@@ -1485,6 +1485,8 @@ void test_game_play(ErrorContext &ec, unsigned int numRuns) {
             g.addAdvantage(1, 0);
 
             g.play(false); // verbose = false, by default
+            std::cout << "resouces " << g.getNumResources() << " and agents " << g.getNumAgents() << std::endl;
+
 
             pass = (g.getNumResources() == 0) &&
                    (g.getNumAgents() == 1);
@@ -1502,7 +1504,7 @@ void test_game_play(ErrorContext &ec, unsigned int numRuns) {
             g.addAdvantage(1, 0);
 
             g.play(false); // verbose = false, by default
-
+            std::cout << "resouces " << g.getNumResources() << " and agents " << g.getNumAgents() << std::endl;
             pass = (g.getNumResources() == 0) &&
                    (g.getNumAgents() == 1);
 
@@ -1523,6 +1525,7 @@ void test_game_play(ErrorContext &ec, unsigned int numRuns) {
 
             pass = (g.getNumResources() == 0) &&
                    (g.getNumAgents() == 2);
+            std::cout << "resouces " << g.getNumResources() << " and agents " << g.getNumAgents() << std::endl;
 
             ec.result(pass);
         }

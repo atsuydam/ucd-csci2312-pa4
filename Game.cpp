@@ -3,7 +3,6 @@
 #include <sstream>
 #include <fstream>
 #include <set>
-#include <bits/stl_set.h>
 #include "Game.h"
 #include "Piece.h"
 #include "Resource.h"
@@ -88,8 +87,10 @@ namespace Gaming {
     Game::~Game()
     {
         // delete all the things. ok, delete the creation of vector<Piece *> grid
-//        for (auto position = __grid.begin(); position != __grid.end(); ++position) {
-//            if (*position != nullptr) {
+//        for (auto position = __grid.begin(); position != __grid.end(); ++position)
+//        {
+//            if (*position != nullptr)
+//            {
 //                delete *position;
 //            }
 //        }
@@ -526,6 +527,8 @@ namespace Gaming {
                Position newP(pos.x + 1, pos.y - 1);
                return newP;
            }
+           if (ac == STAY)
+               return pos;
        }
     }
 
@@ -534,14 +537,14 @@ namespace Gaming {
         // play a round, like the man said std::set is supposed to help with this instead of going through the grid.
         std::set<Piece *> pawns;
         ActionType my_turn;
+
         // collect all the pieces that need a turn, anything without a null ptr.
         for (auto it = __grid.begin(); it != __grid.end(); ++it) {
             if (*it) {
                 pawns.insert(pawns.end(), *it);
             }
-        } // confirmed, pawns are retrieved
-
-        for (auto gameTime = pawns.begin(); gameTime != pawns.end(); gameTime++) {
+        }
+        for (auto gameTime = pawns.begin(); gameTime != pawns.end(); ++gameTime) {
             if (!(*gameTime)->getTurned()) {
                 // grab a piece at a time, change their turn status to true
                 (*gameTime)->setTurned(true);
@@ -551,15 +554,14 @@ namespace Gaming {
                 // grab the action type to move the agent
                 my_turn = (*gameTime)->takeTurn(getSurroundings((*gameTime)->getPosition()));
                 move_pos = move(curr_pos, my_turn);
-
                 // have that item take a turn. Call interact if something is there?
                 if (move_pos.x != curr_pos.x || move_pos.y != curr_pos.y) {
                     Piece *enemy = __grid[(move_pos.x * __width) + move_pos.y];
                     if (enemy != nullptr) {
-                        (*enemy) * *(*gameTime);
+                        *(*gameTime) * *enemy;
                         //make them trade places, I suppose. if the other lost it'll be gone soon anyway
-                        __grid[(move_pos.x * __width) + move_pos.y] = (*gameTime);
                         __grid[(curr_pos.x * __width) + curr_pos.y] = enemy;
+                        __grid[(move_pos.x * __width) + move_pos.y] = *(gameTime);
                     }
                     else {
                         (*gameTime)->setPosition(move_pos);
@@ -572,20 +574,19 @@ namespace Gaming {
 
         // age objects, delete if no longer viable
         // set turn to false for all remaining pieces.
-        for (auto gameTime = pawns.begin(); gameTime != pawns.end(); gameTime++) {
-            (*gameTime)->setTurned(false);
-            (*gameTime)->age();
-        }
         // delete anything that has been interacted with and became nonviable
         for (int i = 0; i < __grid.size(); i++) {
             if (__grid[i] != nullptr) {
+                __grid[i]->setTurned(false);
+                __grid[i]->age();
                 if (!__grid[i]->isViable()) {
-                    //delete __grid[i];
+                    delete __grid[i];
                     __grid[i] = nullptr;
                 }
             }
         }
         // increment round
+        //delete &__grid;
         __round++;
 
     }
@@ -602,9 +603,7 @@ namespace Gaming {
         }
         if (getNumResources() <= 0) {
             __status = OVER;
-            //delete &__grid;
         }
-
     }
 
     // And a friend function

@@ -28,7 +28,7 @@ namespace Gaming {
     void Resource::age()
     {
         __capacity = __capacity / RESOURCE_SPOIL_FACTOR;
-        if (__capacity < 0.01)
+        if (__capacity < 0.1)
             finish();
     }
 
@@ -44,17 +44,20 @@ namespace Gaming {
     // How do I title these???
     Piece & Resource::operator*(Piece &other)
     {
+        std::cout << "a\n";
         return other.interact(this);
     }
 
     Piece &Resource::interact(Agent *greedy)
     {
+        std::cout << "2\n";
         __capacity = 0;
         finish();
     }
 
     Piece & Resource::interact(Resource *) // note: no interaction between resources
     {
+        std::cout << "b\n";
         // "Yo, apple, what up?"
         // "Nothing axe. You?"
         // These do nothing but make inanimate faces at each other.
